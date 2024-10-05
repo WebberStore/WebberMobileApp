@@ -1,7 +1,9 @@
 package com.example.webberapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import com.example.webberapp.ui.login.LoginActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,6 +20,11 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        boolean loggedIn = false;
+        if (!loggedIn) {
+            switchToLogin();
+            return;
+        }
         super.onCreate(savedInstanceState);
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
@@ -34,4 +41,8 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(binding.navView, navController);
     }
 
+    private void switchToLogin() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+    }
 }
