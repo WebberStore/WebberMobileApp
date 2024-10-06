@@ -23,8 +23,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.webberapp.R;
-import com.example.webberapp.ui.login.LoginViewModel;
-import com.example.webberapp.ui.login.LoginViewModelFactory;
 import com.example.webberapp.databinding.ActivityLoginBinding;
 
 public class LoginActivity extends AppCompatActivity {

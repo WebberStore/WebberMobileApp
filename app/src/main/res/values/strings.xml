@@ -9,7 +9,12 @@
     <string name="action_sign_in">Sign in or register</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="welcome">"Welcome !"</string>
-    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_email">Not a valid email</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
+
+    <!--  Preference file keys  -->
+    <string name="PREFERENCE_FILE_KEY_webber_app">PREFERENCE_FILE_KEY_webber_app</string>
+    <!--  Preferences  -->
+    <string name="PREFERENCE_user_email">PREFERENCE_user_email</string>
 </resources>

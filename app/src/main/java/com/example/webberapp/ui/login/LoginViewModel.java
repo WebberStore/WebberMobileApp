@@ -6,20 +6,14 @@ import androidx.lifecycle.ViewModel;
 
 import android.util.Patterns;
 
-import com.example.webberapp.data.LoginRepository;
-import com.example.webberapp.data.Result;
-import com.example.webberapp.data.model.LoggedInUser;
 import com.example.webberapp.R;
+import com.example.webberapp.pojo.AuthTokens;
+import com.example.webberapp.services.auth.AuthService;
 
 public class LoginViewModel extends ViewModel {
 
     private MutableLiveData<LoginFormState> loginFormState = new MutableLiveData<>();
     private MutableLiveData<LoginResult> loginResult = new MutableLiveData<>();
-    private LoginRepository loginRepository;
-
-    LoginViewModel(LoginRepository loginRepository) {
-        this.loginRepository = loginRepository;
-    }
 
     LiveData<LoginFormState> getLoginFormState() {
         return loginFormState;
@@ -29,21 +23,13 @@ public class LoginViewModel extends ViewModel {
         return loginResult;
     }
 
-    public void login(String username, String password) {
-        // can be launched in a separate asynchronous job
-        Result<LoggedInUser> result = loginRepository.login(username, password);
-
-        if (result instanceof Result.Success) {
-            LoggedInUser data = ((Result.Success<LoggedInUser>) result).getData();
-            loginResult.setValue(new LoginResult(new LoggedInUserView(data.getDisplayName())));
-        } else {
-            loginResult.setValue(new LoginResult(R.string.login_failed));
-        }
+    public void login(String email, String password) {
+        AuthTokens authTokens = AuthService.getService().login(email, password);
     }
 
-    public void loginDataChanged(String username, String password) {
-        if (!isUserNameValid(username)) {
-            loginFormState.setValue(new LoginFormState(R.string.invalid_username, null));
+    public void loginDataChanged(String email, String password) {
+        if (!isUsernameValid(email)) {
+            loginFormState.setValue(new LoginFormState(R.string.invalid_email, null));
         } else if (!isPasswordValid(password)) {
             loginFormState.setValue(new LoginFormState(null, R.string.invalid_password));
         } else {
@@ -52,15 +38,13 @@ public class LoginViewModel extends ViewModel {
     }
 
     // A placeholder username validation check
-    private boolean isUserNameValid(String username) {
-        if (username == null) {
-            return false;
-        }
-        if (username.contains("@")) {
-            return Patterns.EMAIL_ADDRESS.matcher(username).matches();
-        } else {
-            return !username.trim().isEmpty();
-        }
+    private boolean isUsernameValid(String username) {
+        return username != null && username.trim().length() > 5;
+//        if (username.contains("@")) {
+//            return Patterns.EMAIL_ADDRESS.matcher(username).matches();
+//        } else {
+//            return !username.trim().isEmpty();
+//        }
     }
 
     // A placeholder password validation check
