@@ -4,7 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 
+import com.example.webberapp.pojo.AuthTokens;
+import com.example.webberapp.state.StateStore;
 import com.example.webberapp.ui.login.LoginActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -40,12 +43,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private boolean checkUserLoggedIn() {
-        Context context = getApplicationContext();
-        SharedPreferences sharedPreferences = context.getSharedPreferences(getString(R.string.PREFERENCE_FILE_KEY_webber_app), Context.MODE_PRIVATE);
-        String email = sharedPreferences.getString(getString(R.string.PREFERENCE_user_email), "");
-
-        if (email.isEmpty()) {
+        AuthTokens authTokens = new StateStore(getApplicationContext()).getAuthTokens();
+        if (authTokens == null) {
             // user not logged in
+            Log.d("__LOG", "Auth tokens are null");
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
             return false;

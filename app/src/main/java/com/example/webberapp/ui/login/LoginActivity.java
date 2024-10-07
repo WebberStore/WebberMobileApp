@@ -1,5 +1,6 @@
 package com.example.webberapp.ui.login;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.StringRes;
@@ -7,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -15,10 +17,12 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.webberapp.MainActivity;
 import com.example.webberapp.R;
 import com.example.webberapp.databinding.ActivityLoginBinding;
 import com.example.webberapp.pojo.AuthTokens;
 import com.example.webberapp.services.auth.AuthService;
+import com.example.webberapp.state.StateStore;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -68,8 +72,12 @@ public class LoginActivity extends AppCompatActivity {
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
-                if (authTokens != null)
-                    Toast.makeText(getApplicationContext(), authTokens.accessToken, Toast.LENGTH_LONG).show();
+                if (authTokens != null) {
+                    Log.d("__LOG", "Logged in!");
+                    new StateStore(getApplicationContext()).setAuthTokens(authTokens);
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(intent);
+                }
             }
         });
     }

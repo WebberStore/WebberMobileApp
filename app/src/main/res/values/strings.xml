@@ -17,4 +17,5 @@
     <string name="PREFERENCE_FILE_KEY_webber_app">PREFERENCE_FILE_KEY_webber_app</string>
     <!--  Preferences  -->
     <string name="PREFERENCE_user_email">PREFERENCE_user_email</string>
+    <string name="PREFERENCE_auth_tokens">PREFERENCE_user_email</string>
 </resources>
