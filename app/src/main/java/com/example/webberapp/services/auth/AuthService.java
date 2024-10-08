@@ -30,18 +30,6 @@ public class AuthService {
         final LoginResDto[] res = new LoginResDto[1];
         Call<LoginResDto> call = authApiInterface.login(req);
 
-
-        Callback<LoginResDto> callback = new Callback<LoginResDto>() {
-            @Override
-            public void onResponse(@NonNull Call<LoginResDto> call, @NonNull Response<LoginResDto> response) {
-
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<LoginResDto> call, @NonNull Throwable throwable) {
-
-            }
-        };
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
