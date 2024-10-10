@@ -1,7 +1,5 @@
 package com.example.webberapp.services.auth;
 
-import androidx.annotation.NonNull;
-
 import com.example.webberapp.pojo.AuthTokens;
 import com.example.webberapp.services.ApiClient;
 import com.example.webberapp.utils.CustomExceptionHandler;
@@ -9,8 +7,6 @@ import com.example.webberapp.utils.CustomExceptionHandler;
 import java.io.IOException;
 
 import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class AuthService {
     private static AuthService authService;
@@ -30,14 +26,11 @@ public class AuthService {
         final LoginResDto[] res = new LoginResDto[1];
         Call<LoginResDto> call = authApiInterface.login(req);
 
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    res[0] = call.execute().body();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+        Thread t = new Thread(() -> {
+            try {
+                res[0] = call.execute().body();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
         });
         t.setUncaughtExceptionHandler(new CustomExceptionHandler());

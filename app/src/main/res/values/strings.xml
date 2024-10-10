@@ -13,6 +13,7 @@
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
     <string name="logout">"Logout"</string>
+    <string name="select_none">"Select None"</string>
 
     <!--  Preference file keys  -->
     <string name="PREFERENCE_FILE_KEY_webber_app">PREFERENCE_FILE_KEY_webber_app</string>

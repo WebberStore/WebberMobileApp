@@ -24,14 +24,11 @@ public class ProductService {
     public Product[] getProducts() throws InterruptedException {
         Call<GetProductsResDto> call = this.productApiInterface.getProducts();
         GetProductsResDto[] res = new GetProductsResDto[1];
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    res[0] = call.execute().body();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+        Thread t = new Thread(() -> {
+            try {
+                res[0] = call.execute().body();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
         });
         t.setUncaughtExceptionHandler(new CustomExceptionHandler());
