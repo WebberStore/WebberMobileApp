@@ -24,8 +24,6 @@ public class BrowseFragment extends Fragment {
     private FragmentBrowseBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        BrowseViewModel browseViewModel = new ViewModelProvider(this).get(BrowseViewModel.class);
-
         binding = FragmentBrowseBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
@@ -40,6 +38,8 @@ public class BrowseFragment extends Fragment {
         for (int i = 0; i < products.length; i++) {
             Log.d("__LOG", "Product " + i + " name:" + products[i].name);
         }
+
+        if (products.length == 0) return root;
 
         RecyclerView recyclerView = binding.recyclerViewProducts;
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

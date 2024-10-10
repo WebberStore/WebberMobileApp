@@ -31,7 +31,9 @@ public class ProductRecyclerViewAdapter extends RecyclerView.Adapter<ProductRecy
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Product product = products[position];
-        holder.textView.setText(product.name);
+        holder.name.setText(product.name);
+        holder.price.setText(Float.toString(product.price));
+        holder.description.setText(product.description);
     }
 
     @Override
@@ -40,11 +42,15 @@ public class ProductRecyclerViewAdapter extends RecyclerView.Adapter<ProductRecy
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView textView;
+        TextView name;
+        TextView price;
+        TextView description;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            textView = itemView.findViewById(R.id.text_view_product_name);
+            name = itemView.findViewById(R.id.text_view_product_name);
+            price = itemView.findViewById(R.id.text_view_product_price);
+            description = itemView.findViewById(R.id.text_view_product_description);
             itemView.setOnClickListener(this);
         }
 
