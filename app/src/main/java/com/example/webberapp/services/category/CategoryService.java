@@ -22,7 +22,7 @@ public class CategoryService {
         return categoryService;
     }
 
-    public Category[] getCategories() throws InterruptedException {
+    public Category[] getCategories()  {
         Call<Category[]> call = this.categoryApiInterface.getCategories();
         Category[][] res = new Category[1][];
         Thread t = new Thread(() -> {
@@ -34,7 +34,11 @@ public class CategoryService {
         });
         t.setUncaughtExceptionHandler(new CustomExceptionHandler());
         t.start();
-        t.join();
+        try {
+            t.join();
+        } catch (InterruptedException e) {
+            new CustomExceptionHandler().logger(e);
+        }
 
         if (res[0] == null) return new Category[0];
         return res[0];

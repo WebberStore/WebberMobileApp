@@ -1,5 +1,6 @@
 package com.example.webberapp.ui.browse;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,20 +20,26 @@ import com.example.webberapp.R;
 import com.example.webberapp.databinding.FragmentBrowseBinding;
 import com.example.webberapp.pojo.Category;
 import com.example.webberapp.pojo.Product;
+import com.example.webberapp.services.category.CategoryService;
+import com.example.webberapp.services.product.ProductService;
 
 
 public class BrowseFragment extends Fragment {
 
     private FragmentBrowseBinding binding;
+    private Product[] products;
+    Category[] categories;
+
+    String searchString = ""; // "" = not searching anything
+    int selectedCategory = 0; // 0 = not selected any category
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentBrowseBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         // fetch data
-        BrowseFragmentHelper helper = new BrowseFragmentHelper();
-        Product[] products = helper.getProducts();
-        final Category[] categories = helper.getCategories();
+        products = ProductService.getService().getProducts();
+        categories = CategoryService.getService().getCategories();
 
         if (products.length == 0) return root;
 
@@ -42,7 +49,7 @@ public class BrowseFragment extends Fragment {
         ProductRecyclerViewAdapter recyclerViewAdapter = new ProductRecyclerViewAdapter(requireContext(), products);
         recyclerView.setAdapter(recyclerViewAdapter);
 
-        // configure categories spinner
+        // configure category selection
         Spinner spinner = binding.categorySpinner;
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -52,13 +59,18 @@ public class BrowseFragment extends Fragment {
             spinnerAdapter.add(category.name);
         }
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            private boolean initialized = false;
+
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (i == 0) {
-                    Log.d("__LOG", "Category selection removed");
+                if (!initialized) {
+                    initialized = true;
                     return;
                 }
-                Log.d("__LOG", "Category selected, category:" + categories[i - 1].name);
+                selectedCategory = i;
+                if (i == 0) Log.d("__LOG", "Category selection removed");
+                else Log.d("__LOG", "Category selected, category:" + categories[i - 1].name);
+                refreshProducts(requireContext());
             }
 
             @Override
@@ -72,14 +84,42 @@ public class BrowseFragment extends Fragment {
             @Override
             public boolean onQueryTextSubmit(String s) {
                 Log.d("__LOG", "Searched for string: " + s);
+                refreshProducts(requireContext());
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String s) {
+                searchString = s;
+                return false;
+            }
+        });
+        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                if (searchString.isEmpty()) {
+                    Log.d("__LOG", "Search cleared");
+                    refreshProducts(requireContext());
+                }
                 return false;
             }
         });
         return root;
+    }
+
+    private void refreshProducts(Context context) {
+        ProductService productService = ProductService.getService();
+        if (selectedCategory == 0 && searchString.isEmpty()) {
+            products = productService.getProducts();
+        } else if (searchString.isEmpty()) {
+            products = productService.getProductsByCategory(categories[selectedCategory - 1].id); // -1 to remove no-selection category
+        } else if (selectedCategory == 0) {
+            products = productService.getProductsBySearch(searchString);
+        } else {
+            products = productService.getProductsBySearch(searchString, categories[selectedCategory - 1].id); // -1 to remove no-selection category
+        }
+
+        ProductRecyclerViewAdapter recyclerViewAdapter = new ProductRecyclerViewAdapter(context, products);
+        binding.recyclerViewProducts.setAdapter(recyclerViewAdapter);
     }
 }
