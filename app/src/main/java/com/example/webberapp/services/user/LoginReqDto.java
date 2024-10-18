@@ -1,4 +1,4 @@
-package com.example.webberapp.services.auth;
+package com.example.webberapp.services.user;
 
 import com.google.gson.annotations.SerializedName;
 

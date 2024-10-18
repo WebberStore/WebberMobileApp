@@ -1,15 +1,15 @@
 package com.example.webberapp.pojo;
 
 public class Product {
-    public int id;
+    public String id;
     public String name;
     public String description;
-    public float price;
+    public double price;
+    public int stock;
     public String imageUrl;
-    public int categoryId;
-    public String categoryName;
-    public int sellerId;
-    public String[] tags;
-    // "variants"
-    // "reviews"
+    public Category category;
+    public Vendor vendor;
+    public String author;
+    public String createdAt;
+    public String updatedAt;
 }

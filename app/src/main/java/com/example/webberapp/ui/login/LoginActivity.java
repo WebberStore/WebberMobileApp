@@ -20,8 +20,8 @@ import android.widget.Toast;
 import com.example.webberapp.MainActivity;
 import com.example.webberapp.R;
 import com.example.webberapp.databinding.ActivityLoginBinding;
-import com.example.webberapp.pojo.AuthTokens;
-import com.example.webberapp.services.auth.AuthService;
+import com.example.webberapp.pojo.User;
+import com.example.webberapp.services.user.UserService;
 import com.example.webberapp.state.StateStore;
 
 public class LoginActivity extends AppCompatActivity {
@@ -65,16 +65,16 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AuthTokens authTokens = null;
+                User user = null;
                 try {
-                    AuthService authService = AuthService.getService();
-                    authTokens = authService.login(usernameEditText.getText().toString(), passwordEditText.getText().toString());
+                    UserService userService = UserService.getService();
+                    user = userService.login(usernameEditText.getText().toString(), passwordEditText.getText().toString());
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
-                if (authTokens != null) {
-                    Log.d("__LOG", "Logged in!");
-                    new StateStore(getApplicationContext()).setAuthTokens(authTokens);
+                if (user != null) {
+                    Log.d("__LOG", "Logged in! name: " + user.name);
+                    new StateStore(getApplicationContext()).setUser(user);
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(intent);
                 }

@@ -33,7 +33,7 @@ public class AccountFragment extends Fragment {
         buttonLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new StateStore(v.getContext()).setAuthTokens(null);
+                new StateStore(v.getContext()).setUser(null);
                 Intent intent = new Intent(v.getContext(), MainActivity.class);
                 startActivity(intent);
             }

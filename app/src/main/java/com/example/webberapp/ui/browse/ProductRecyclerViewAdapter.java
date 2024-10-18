@@ -32,7 +32,7 @@ public class ProductRecyclerViewAdapter extends RecyclerView.Adapter<ProductRecy
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Product product = products[position];
         holder.name.setText(product.name);
-        holder.price.setText(Float.toString(product.price));
+        holder.price.setText(Double.toString(product.price));
         holder.description.setText(product.description);
     }
 

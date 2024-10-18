@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.example.webberapp.pojo.AuthTokens;
+import com.example.webberapp.pojo.User;
 import com.example.webberapp.state.StateStore;
 import com.example.webberapp.ui.login.LoginActivity;
 
@@ -32,10 +32,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private boolean checkUserLoggedIn() {
-        AuthTokens authTokens = new StateStore(getApplicationContext()).getAuthTokens();
-        if (authTokens == null) {
+        User user = new StateStore(getApplicationContext()).getUser();
+        if (user == null) {
             // user not logged in
-            Log.d("__LOG", "Auth tokens are null");
+            Log.d("__LOG", "User is null");
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
             return false;

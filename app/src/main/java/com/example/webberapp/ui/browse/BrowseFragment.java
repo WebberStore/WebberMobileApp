@@ -20,7 +20,6 @@ import com.example.webberapp.R;
 import com.example.webberapp.databinding.FragmentBrowseBinding;
 import com.example.webberapp.pojo.Category;
 import com.example.webberapp.pojo.Product;
-import com.example.webberapp.services.category.CategoryService;
 import com.example.webberapp.services.product.ProductService;
 
 
@@ -39,7 +38,7 @@ public class BrowseFragment extends Fragment {
 
         // fetch data
         products = ProductService.getService().getProducts();
-        categories = CategoryService.getService().getCategories();
+        categories = ProductService.getService().getCategories();
 
         if (products.length == 0) return root;
 
